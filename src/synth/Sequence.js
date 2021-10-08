@@ -53,5 +53,13 @@ export default class Sequence extends Modulatable {
         this.values = new_sequence;
     };
 
+    set_param = (name, value) => {
+        switch (name) {
+            case "target": this.target = value; break;
+            default:
+                throw `No valid sequence param: ${name}`;
+        }
+    };
+
 }
 

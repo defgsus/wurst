@@ -21,6 +21,10 @@ export function reducer(state, action) {
             _synth.set_sequence_value(action.id, action.index, action.value);
             return _synth.get_state();
 
+        case "SET_SEQUENCE_PARAM":
+            _synth.set_sequence_param(action.id, action.name, action.value);
+            return _synth.get_state();
+
         default:
             return state;
     }

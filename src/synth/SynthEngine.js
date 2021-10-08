@@ -36,20 +36,29 @@ export default class SynthEngine extends Modulatable {
    }
 
     get_state = () => {
+        const modulation_targets = [];
         const voices = {};
         for (const key of Object.keys(this.voices)) {
             voices[key] = this.voices[key].get_state();
+            voices[key].id = key;
+            for (const name of Object.keys(this.voices[key].params))
+                modulation_targets.push(`voice.${key}.${name}`)
         }
         const sequences = {};
         for (const key of Object.keys(this.sequences)) {
             sequences[key] = this.sequences[key].get_state();
+            sequences[key].id = key;
+            for (const name of Object.keys(this.sequences[key].params))
+                modulation_targets.push(`sequence.${key}.${name}`)
         }
+
         return {
             tick: this.tick,
             playback_state: this.playback_state,
             ...this.get_modulated_param_values(),
             voices: voices,
             sequences: sequences,
+            modulation_targets,
         }
     };
 
@@ -107,6 +116,10 @@ export default class SynthEngine extends Modulatable {
 
     set_sequence_value = (id, index, value) => {
         this.sequences[id].set_value(index, value);
+    };
+
+    set_sequence_param = (id, name, value) => {
+        this.sequences[id].set_param(name, value);
     };
 
     reset_all_modulation = () => {

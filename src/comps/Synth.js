@@ -41,12 +41,11 @@ const Synth = (props) => {
             {Object.keys(sequences).map(key => (
                 <Sequence
                     key={key}
-                    id={key}
-                    sequence={sequences[key]}
-                    set_value={(index, value) => dispatcher({type: "SET_SEQUENCE_VALUE", id: key, index, value})}
+                    sequence_id={key}
                 />
             ))}
 
+            <pre>{JSON.stringify(state, null, 2)}</pre>
         </div>
     );
 
