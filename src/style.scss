@@ -1,4 +1,6 @@
+@import "comps/fader";
 @import "comps/sequence";
+@import "comps/voice";
 
 body {
     background: #222222;
@@ -7,11 +9,24 @@ body {
 }
 
 #app {
+    .hidden {
+        display: none;
+    }
+
     select {
         border: none;
         background: #344;
         color: #fff;
         font-family: monospace;
+    }
+
+    .grid-x {
+        display: flex;
+        flex-direction: row;
+
+        &.margin-right > * {
+            margin-right: .1rem;
+        }
     }
 
 }

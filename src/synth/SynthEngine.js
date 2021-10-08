@@ -29,8 +29,9 @@ export default class SynthEngine extends Modulatable {
             "1": new Voice(this),
         };
         this.sequences = {
-            "0": new Sequence(this),
+            "0": new Sequence(this, {values: [1, 0, 0, 0, 1, 0, 0, 0], target: "voice.0.gate"}),
             "1": new Sequence(this, {values: [1, 0, 0, 1, 0, 0], target: "voice.1.gate"}),
+            "2": new Sequence(this, {values: [1, 0, 0, 1, 0, 0, 0], target: "voice.1.amp"}),
         };
 
    }
@@ -69,12 +70,12 @@ export default class SynthEngine extends Modulatable {
             const seq = this.sequences[id];
             seq.apply_tick();
         }
+        this.pass_all_modulation();
+
         for (const id of Object.keys(this.voices)) {
             const voice = this.voices[id];
             voice.apply_params();
         }
-
-        this.pass_all_modulation();
     };
 
     reset_tick = () => {
@@ -139,7 +140,7 @@ export default class SynthEngine extends Modulatable {
         for (const id of Object.keys(this.sequences)) {
             const seq = this.sequences[id];
             if (seq.index !== seq.last_index) {
-                this._pass_modulation_value(seq.get_value(), seq.target);
+                this._pass_modulation_value(seq.get_value(), seq.params.target.value);
                 seq.last_index = seq.index;
             }
         }

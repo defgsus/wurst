@@ -29,7 +29,7 @@ export default class Modulatable {
 
     param = (name) => {
         const p = this.params[name];
-        return p.value + p.modulation_value;
+        return _modulated_value(p);
     };
 
     get_param_values = () => {
@@ -45,7 +45,23 @@ export default class Modulatable {
         const values = {};
         for (const key of Object.keys(this.params)) {
             const param = this.params[key];
-            values[key] = param.value + param.modulation_value;
+            values[key] = _modulated_value(param);
+        }
+        return values;
+    };
+
+    get_params_state = () => {
+        const values = {};
+        for (const key of Object.keys(this.params)) {
+            const param = this.params[key];
+            values[key] = {
+                name: key,
+                value: _modulated_value(param),
+                true_value: param.value,
+                min_value: param.min_value,
+                max_value: param.max_value,
+                help: param.help,
+            };
         }
         return values;
     };
@@ -59,3 +75,14 @@ export default class Modulatable {
 
 }
 
+
+function _modulated_value(p) {
+    let value = p.value;
+    if (typeof p.value === "number" && typeof p.modulation_value === "number")
+        value = value + p.modulation_value;
+    if (typeof p.min_value === "number")
+        value = Math.max(p.min_value, value);
+    if (typeof p.max_value === "number")
+        value = Math.min(p.max_value, value);
+    return value;
+}

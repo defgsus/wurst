@@ -6,32 +6,34 @@ export default class Sequence extends Modulatable {
             "speed_div": {
                 default: 1,
                 help: "divider of step speed"
+            },
+            "target": {
+                default: "voice.0.gate",
+                help: "target of the sequence modulation"
+            },
+            "values": {
+                default: [0, 0, 0, 0, 0, 0, 0, 0],
+                help: "values"
             }
         }, params);
 
         this.synth = synth;
-        this.values = [1, 0, 0, 0, 1, 0, 0, 0];
         this.tick = 0;
         this.sub_tick = 0;
         this.index = 0;
         this.last_index = -1;
-        this.target = "voice.0.gate";
-
-        if (params) {
-            if (typeof params.values !== "undefined")
-                this.values = params.values;
-            if (typeof params.target !== "undefined")
-                this.target = params.target;
-        }
     }
+
+    length = () => this.params.values.value.length;
 
     get_state = () => {
         return {
             tick: this.tick,
             index: this.index,
-            target: this.target,
-            values: this.values,
-            ...this.get_modulated_param_values()
+            //target: this.target,
+            //values: this.values,
+            params: this.get_params_state(),
+            //...this.get_modulated_param_values()
         };
     };
 
@@ -42,7 +44,7 @@ export default class Sequence extends Modulatable {
             this.tick += 1;
         }
         this.last_index = this.index;
-        this.index = this.tick % this.values.length;
+        this.index = this.tick % this.length();
     };
 
     reset_tick = () => {
@@ -52,19 +54,17 @@ export default class Sequence extends Modulatable {
         this.last_index = -1;
     };
 
-    get_value = () => this.values[this.index];
+    get_value = () => this.params.values.value[this.index];
 
     set_value = (index, value) => {
-        const new_sequence = [...this.values];
+        const new_sequence = [...this.param("values")];
         new_sequence[index] = value;
-        this.values = new_sequence;
+        this.set_param("values", new_sequence);
     };
 
     set_param = (name, value) => {
-        switch (name) {
-            case "target": this.target = value; break;
-            default:
-                throw `No valid sequence param: ${name}`;
+        if (!this.set_modulatable_param(name, value)) {
+            throw `No valid sequence param: ${name}`;
         }
     };
 

@@ -1,0 +1,29 @@
+#app .vfader {
+  border: 1px solid rgba(0, 0, 0, .2);
+  background: #333;
+  width: 1rem;
+  height: 5rem;
+
+  .value, .mod-value {
+    height: 5rem;
+  }
+  .value {
+    width: 70%;
+    background: #799;
+  }
+
+  .mod-value {
+    width: 30%;
+    background: #aa7;
+  }
+
+  .display {
+    position: absolute;
+    background: #000;
+    padding: .1rem;
+    margin-left: 1rem;
+    //height: 1rem;
+    width: min-content;
+    height: min-content;
+  }
+}

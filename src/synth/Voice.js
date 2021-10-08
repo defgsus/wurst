@@ -4,25 +4,30 @@ import Modulatable from "./Modulatable";
 export default class Voice extends Modulatable {
     constructor(synth, params=null) {
         super({
-            "frequency": {
-                default: 500,
-                help: "frequency in Hertz",
-            },
             "gate": {
                 default: 0,
+                min_value: 0, max_value: 1,
                 help: "gate for amplitude envelope",
+            },
+            "frequency": {
+                default: 500,
+                min_value: -22050, max_value: 22050,
+                help: "frequency in Hertz",
             },
             "amp": {
                 default: .5,
+                min_value: 0, max_value: 1,
                 help: "final amplitude",
             },
             "attack": {
-                default: .1,
-                help: "attack of amplitude envelope",
+                default: 10,
+                min_value: 0, max_value: 5000,
+                help: "attack of amplitude envelope (milliseconds)",
             },
             "decay": {
-                default: 1.,
-                help: "decay of amplitude envelope",
+                default: 500,
+                min_value: 0, max_value: 5000,
+                help: "decay of amplitude envelope (milliseconds)",
             },
         }, params);
         this.synth = synth;
@@ -45,14 +50,14 @@ export default class Voice extends Modulatable {
 
         if (this.param("gate") >= .5) {
             this.env.gain.cancelScheduledValues(now);
-            this.env.gain.linearRampToValueAtTime(1, now + this.param("attack"));
-            this.env.gain.linearRampToValueAtTime(0, now + this.param("attack") + this.param("decay"));
+            this.env.gain.linearRampToValueAtTime(1, now + this.param("attack") / 1000.);
+            this.env.gain.linearRampToValueAtTime(0, now + (this.param("attack") + this.param("decay")) / 1000.);
         }
     };
 
     get_state = () => {
         return {
-            ...this.get_modulated_param_values(),
+            params: this.get_params_state(),
         };
     };
 
