@@ -1,0 +1,22 @@
+#app .sequence {
+  display: grid;
+  grid: auto-flow / repeat(8, calc(1fr/8));
+  font-weight: bold;
+  width: 8rem;
+  height: 1rem;
+
+  .button {
+    height: 100%;
+    background: #555;
+    border: 1px solid black;
+    &.tick {
+      background: #777;
+    }
+    &.on {
+      background: #588;
+      &.tick {
+        background: #7aa;
+      }
+    }
+  }
+}

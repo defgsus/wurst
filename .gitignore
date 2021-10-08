@@ -1,0 +1,9 @@
+# js
+node_modules/
+.parcel-cache/
+dist/
+*.lock
+
+# intellij
+.idea/
+*.iml
