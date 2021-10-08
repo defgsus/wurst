@@ -25,12 +25,12 @@ export default class SynthEngine extends Modulatable {
 
         this.context = context || new AudioContext();
         this.voices = {
-            "0": new Voice(this),
+            "0": new Voice(this, {frequency: 300}),
             "1": new Voice(this),
         };
         this.sequences = {
             "0": new Sequence(this),
-            "1": new Sequence(this),
+            "1": new Sequence(this, {values: [1, 0, 0, 1, 0, 0], target: "voice.1.gate"}),
         };
 
    }
@@ -114,12 +114,16 @@ export default class SynthEngine extends Modulatable {
         }
     };
 
-    set_sequence_value = (id, index, value) => {
-        this.sequences[id].set_value(index, value);
+    set_voice_param = (id, name, value) => {
+        this.voices[id].set_param(name, value);
     };
 
     set_sequence_param = (id, name, value) => {
         this.sequences[id].set_param(name, value);
+    };
+
+    set_sequence_value = (id, index, value) => {
+        this.sequences[id].set_value(index, value);
     };
 
     reset_all_modulation = () => {

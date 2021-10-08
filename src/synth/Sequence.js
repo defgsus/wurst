@@ -1,13 +1,13 @@
 import Modulatable from "./Modulatable";
 
 export default class Sequence extends Modulatable {
-    constructor(synth) {
+    constructor(synth, params=null) {
         super({
             "speed_div": {
                 default: 1,
                 help: "divider of step speed"
             }
-        });
+        }, params);
 
         this.synth = synth;
         this.values = [1, 0, 0, 0, 1, 0, 0, 0];
@@ -15,7 +15,14 @@ export default class Sequence extends Modulatable {
         this.sub_tick = 0;
         this.index = 0;
         this.last_index = -1;
-        this.target = "voice.0.gate"
+        this.target = "voice.0.gate";
+
+        if (params) {
+            if (typeof params.values !== "undefined")
+                this.values = params.values;
+            if (typeof params.target !== "undefined")
+                this.target = params.target;
+        }
     }
 
     get_state = () => {

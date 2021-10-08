@@ -1,13 +1,17 @@
 
 export default class Modulatable {
-    constructor(param_def) {
+    constructor(param_def, init=null) {
         this.params = {};
         for (const key of Object.keys(param_def)) {
             const param = param_def[key];
+            let value = param.default;
+            if (init && typeof init[key] !== "undefined")
+                value = init[key];
+
             this.params[key] = {
                 ...param,
-                value: param.default,
-                modulated_value: param.default,
+                value: value,
+                modulation_value: 0,
             };
         }
     }
@@ -15,16 +19,17 @@ export default class Modulatable {
     reset_modulation = () => {
         for (const key of Object.keys(this.params)) {
             const param = this.params[key];
-            param.modulated_value = param.value;
+            param.modulation_value = 0;
         }
     };
 
     add_modulation_value = (name, value) => {
-        this.params[name].modulated_value += value;
+        this.params[name].modulation_value += value;
     };
 
     param = (name) => {
-        return this.params[name].modulated_value;
+        const p = this.params[name];
+        return p.value + p.modulation_value;
     };
 
     get_param_values = () => {
@@ -40,9 +45,16 @@ export default class Modulatable {
         const values = {};
         for (const key of Object.keys(this.params)) {
             const param = this.params[key];
-            values[key] = param.modulated_value;
+            values[key] = param.value + param.modulation_value;
         }
         return values;
+    };
+
+    set_modulatable_param = (name, value) => {
+        if (!this.params[name])
+            return false;
+        this.params[name].value = value;
+        return true;
     };
 
 }

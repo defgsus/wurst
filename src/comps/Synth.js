@@ -1,6 +1,7 @@
 import React, { Component, useContext, useEffect } from "react";
-import Sequence from "./Sequence";
 import state_context from "../context";
+import Sequence from "./Sequence";
+import Voice from "./Voice";
 
 /* TODO: current setTimeout()-on-dispatcher procedure is a quite ugly one */
 
@@ -32,12 +33,22 @@ function tick_loop() {
 const Synth = (props) => {
 
     const state = useContext(state_context);
-    const { tick, playback_state, bpm, bar_length, note_div, sequences, dispatcher } = state;
+    const {
+        tick, playback_state, bpm, bar_length, note_div,
+        voices, sequences, dispatcher
+    } = state;
     //console.log("STATE", state);
     update_tick(playback_state, bpm, bar_length, note_div, dispatcher);
 
     return (
         <div>
+            {Object.keys(voices).map(key => (
+                <Voice
+                    key={key}
+                    voice_id={key}
+                />
+            ))}
+
             {Object.keys(sequences).map(key => (
                 <Sequence
                     key={key}

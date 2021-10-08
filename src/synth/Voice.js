@@ -2,7 +2,7 @@ import Modulatable from "./Modulatable";
 
 
 export default class Voice extends Modulatable {
-    constructor(synth) {
+    constructor(synth, params=null) {
         super({
             "frequency": {
                 default: 500,
@@ -24,7 +24,7 @@ export default class Voice extends Modulatable {
                 default: 1.,
                 help: "decay of amplitude envelope",
             },
-        });
+        }, params);
         this.synth = synth;
         this.context = this.synth.context;
 
@@ -52,7 +52,18 @@ export default class Voice extends Modulatable {
 
     get_state = () => {
         return {
-            ...this.get_modulated_param_values,
+            ...this.get_modulated_param_values(),
         };
-    }
+    };
+
+    set_param = (name, value) => {
+        if (!this.set_modulatable_param(name, value)) {
+            switch (name) {
+                default:
+                    throw `No valid voice param: ${name}`;
+            }
+        }
+        this.apply_params();
+    };
+
 }
