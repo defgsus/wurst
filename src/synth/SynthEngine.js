@@ -39,13 +39,17 @@ export default class SynthEngine extends Modulatable {
     get_state = () => {
         const modulation_targets = [];
         const voices = {};
+        const sequences = {};
+
+        for (const name of Object.keys(this.params))
+            modulation_targets.push(`main.${name}`);
+
         for (const key of Object.keys(this.voices)) {
             voices[key] = this.voices[key].get_state();
             voices[key].id = key;
             for (const name of Object.keys(this.voices[key].params))
-                modulation_targets.push(`voice.${key}.${name}`)
+                modulation_targets.push(`voice.${key}.${name}`);
         }
-        const sequences = {};
         for (const key of Object.keys(this.sequences)) {
             sequences[key] = this.sequences[key].get_state();
             sequences[key].id = key;
@@ -114,7 +118,7 @@ export default class SynthEngine extends Modulatable {
             }
         }
     };
-    
+
     set_main_param = (name, value) => {
         if (!this.set_modulatable_param(name, value)) {
             throw `No valid main param: ${name}`;
@@ -134,6 +138,7 @@ export default class SynthEngine extends Modulatable {
     };
 
     reset_all_modulation = () => {
+        this.reset_modulation();
         for (const id of Object.keys(this.voices))
             this.voices[id].reset_modulation();
         for (const id of Object.keys(this.sequences))
@@ -156,6 +161,9 @@ export default class SynthEngine extends Modulatable {
         target = target.split(".");
 
         switch (target[0]) {
+            case "main":
+                this.add_modulation_value(target[1], value);
+                break;
             case "voice":
                 this.voices[target[1]].add_modulation_value(target[2], value);
                 break;
