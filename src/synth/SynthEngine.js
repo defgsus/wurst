@@ -1,6 +1,7 @@
 import Sequence from "./Sequence";
 import Voice from "./Voice";
 import Modulatable from "./Modulatable";
+import React from "react";
 
 
 export default class SynthEngine extends Modulatable {
@@ -59,6 +60,10 @@ export default class SynthEngine extends Modulatable {
 
         return {
             tick: this.tick,
+            beat: [
+                Math.floor(this.tick / this.params.bar_length.value) + 1,
+                this.tick % this.params.bar_length.value + 1
+            ],
             playback_state: this.playback_state,
             params: this.get_params_state(),
             voices: voices,
@@ -135,6 +140,11 @@ export default class SynthEngine extends Modulatable {
 
     set_sequence_value = (id, index, value) => {
         this.sequences[id].set_value(index, value);
+    };
+
+    add_voice = () => {
+        const count = Object.keys(this.voices).length;
+        this.voices[`${count}`] = new Voice(this);
     };
 
     add_sequence = () => {

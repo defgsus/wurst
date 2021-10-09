@@ -4,13 +4,11 @@ import Number from "./Number";
 
 
 const Clock = (props) => {
-    const { tick, params, dispatcher } = useContext(state_context);
+    const { tick, beat, params, dispatcher } = useContext(state_context);
 
     return (
         <div {...props}>
-            <b>{Math.floor(tick / params.bar_length.value) + 1}.{tick % params.bar_length.value + 1}</b>
-
-            <div className={"grid-x"}>
+            <div className={"grid-x margin-right"}>
                 <Number
                     param={params.bar_length}
                     on_change={value => dispatcher({type: "SET_MAIN_PARAM", name: "bar_length", value})}

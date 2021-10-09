@@ -38,6 +38,7 @@ const Knob = (probs) => {
         <div
             className={"knob"}
             onMouseMove={handle_move}
+            title={`${param.help} (${param.value})`}
         >
             <svg
                 width={"2rem"}

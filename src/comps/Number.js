@@ -6,7 +6,7 @@ const Number = (probs) => {
     } = probs;
 
     return (
-        <div className={"number"}>
+        <div className={"number"} title={param.help}>
             <input
                 type={"number"}
                 min={param.min_value}

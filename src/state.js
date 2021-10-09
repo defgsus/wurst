@@ -17,6 +17,10 @@ export function reducer(state, action) {
             _synth.apply_transport_signal(action.signal);
             return _synth.get_state();
 
+        case "ADD_VOICE":
+            _synth.add_voice();
+            return _synth.get_state();
+
         case "ADD_SEQUENCE":
             _synth.add_sequence();
             return _synth.get_state();

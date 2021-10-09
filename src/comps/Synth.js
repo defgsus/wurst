@@ -41,7 +41,7 @@ const Synth = (props) => {
     update_tick(playback_state, params.bpm.value, params.bar_length.value, params.note_div.value, dispatcher);
 
     return (
-        <div>
+        <div className={"synth"}>
 
             {Object.keys(voices).map(key => (
                 <Voice
@@ -57,11 +57,18 @@ const Synth = (props) => {
                 />
             ))}
 
-            <button
-                className={"add-button"}
-                onClick={e => dispatcher({type: "ADD_SEQUENCE"})}>
-                seq +
-            </button>
+            <div>
+                <button
+                    className={"add-button"}
+                    onClick={e => dispatcher({type: "ADD_SEQUENCE"})}>
+                    seq +
+                </button>
+                <button
+                    className={"add-button"}
+                    onClick={e => dispatcher({type: "ADD_VOICE"})}>
+                    voice +
+                </button>
+            </div>
 
             <pre>{JSON.stringify(state, null, 2)}</pre>
         </div>

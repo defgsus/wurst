@@ -41,7 +41,7 @@ const VFader = (probs) => {
     return (
         <div
             className={"vfader"}
-            title={`${param.name} (${param.value})`}
+            title={`${param.help} (${param.value})`}
             style={{height: `${height}rem`}}
             onMouseDown={e => { if (change_event) change_event(e); update_display(true); }}
             onMouseMove={e => { if (change_event && e.buttons === 1) { change_event(e); update_display(true); }}}
