@@ -37,7 +37,7 @@ const VFader = (probs) => {
                 .toFixed(2)
         )
     ));
-    
+
     return (
         <div
             className={"vfader"}

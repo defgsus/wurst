@@ -3,8 +3,14 @@ import Modulatable from "./Modulatable";
 export default class Sequence extends Modulatable {
     constructor(synth, params=null) {
         super({
+            "length": {
+                default: 8,
+                min_value: 1, max_value: 256,
+                help: "length of sequence"
+            },
             "speed_div": {
                 default: 1,
+                min_value: 1, max_value: 256,
                 help: "divider of step speed"
             },
             "target": {
@@ -13,7 +19,11 @@ export default class Sequence extends Modulatable {
             },
             "values": {
                 default: [0, 0, 0, 0, 0, 0, 0, 0],
-                help: "values"
+                help: "sequence values"
+            },
+            "amp": {
+                default: 1,
+                help: "amplitude of output"
             }
         }, params);
 
@@ -22,6 +32,7 @@ export default class Sequence extends Modulatable {
         this.sub_tick = 0;
         this.index = 0;
         this.last_index = -1;
+        this.params.length.value = this.params.values.value.length;
     }
 
     length = () => this.params.values.value.length;
@@ -30,10 +41,7 @@ export default class Sequence extends Modulatable {
         return {
             tick: this.tick,
             index: this.index,
-            //target: this.target,
-            //values: this.values,
             params: this.get_params_state(),
-            //...this.get_modulated_param_values()
         };
     };
 
@@ -54,7 +62,7 @@ export default class Sequence extends Modulatable {
         this.last_index = -1;
     };
 
-    get_value = () => this.params.values.value[this.index];
+    get_value = () => this.params.values.value[this.index] * this.param("amp");
 
     set_value = (index, value) => {
         const new_sequence = [...this.param("values")];
@@ -65,6 +73,21 @@ export default class Sequence extends Modulatable {
     set_param = (name, value) => {
         if (!this.set_modulatable_param(name, value)) {
             throw `No valid sequence param: ${name}`;
+        }
+
+        if (name === "length" && this.params.values.value.length !== value) {
+            const new_seq = [];
+            for (let i=0; i<value; ++i) {
+                new_seq.push(
+                    i < this.params.values.value.length
+                        ? this.params.values.value[i]
+                        : 0
+                );
+            }
+            this.params.values.value = new_seq;
+        }
+        else if (name === "values" && this.params.length.value !== value.length) {
+            this.params.length.value = value.length;
         }
     };
 

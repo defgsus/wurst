@@ -30,7 +30,7 @@ export default class SynthEngine extends Modulatable {
         };
         this.sequences = {
             "0": new Sequence(this, {values: [1, 0, 0, 0, 1, 0, 0, 0], target: "voice.0.gate"}),
-            "1": new Sequence(this, {values: [1, 0, 0, 1, 0, 0], target: "voice.1.gate"}),
+            "1": new Sequence(this, {values: [1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0], target: "voice.1.gate"}),
             "2": new Sequence(this, {values: [1, 0, 0, 1, 0, 0, 0], target: "voice.1.amp"}),
         };
 
@@ -56,7 +56,7 @@ export default class SynthEngine extends Modulatable {
         return {
             tick: this.tick,
             playback_state: this.playback_state,
-            ...this.get_modulated_param_values(),
+            params: this.get_params_state(),
             voices: voices,
             sequences: sequences,
             modulation_targets,
@@ -112,6 +112,12 @@ export default class SynthEngine extends Modulatable {
                 // trigger the gates
                 this.pass_all_modulation();
             }
+        }
+    };
+    
+    set_main_param = (name, value) => {
+        if (!this.set_modulatable_param(name, value)) {
+            throw `No valid main param: ${name}`;
         }
     };
 

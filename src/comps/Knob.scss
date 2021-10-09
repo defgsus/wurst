@@ -1,0 +1,37 @@
+#app .knob {
+
+  display: inline-block;
+
+  .circle {
+    fill: #333;
+    stroke: #494949;
+  }
+
+  .value, .mod-value {
+    fill: none;
+    stroke-width: 2;
+  }
+
+  .value {
+    stroke: #799;
+  }
+
+  .mod-value {
+    stroke: #aa7;
+    stroke-dasharray: 1;
+  }
+
+  .name {
+    text-align: center;
+  }
+
+  .display {
+    position: absolute;
+    background: #000;
+    padding: .1rem;
+    margin-left: 1rem;
+    //height: 1rem;
+    width: min-content;
+    height: min-content;
+  }
+}

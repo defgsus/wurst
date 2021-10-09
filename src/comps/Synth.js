@@ -34,11 +34,11 @@ const Synth = (props) => {
 
     const state = useContext(state_context);
     const {
-        tick, playback_state, bpm, bar_length, note_div,
+        tick, playback_state, params,
         voices, sequences, dispatcher
     } = state;
     //console.log("STATE", state);
-    update_tick(playback_state, bpm, bar_length, note_div, dispatcher);
+    update_tick(playback_state, params.bpm.value, params.bar_length.value, params.note_div.value, dispatcher);
 
     return (
         <div>

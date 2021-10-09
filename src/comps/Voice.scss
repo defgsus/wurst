@@ -1,6 +1,7 @@
 #app .voice {
   border: 1px solid black;
   background: #24303e;
+  display: inline-block;
 
   .header {
     background: #3c4d60;
@@ -9,6 +10,6 @@
   }
 
   .content {
-    padding: .1rem;
+    padding: .4rem;
   }
 }

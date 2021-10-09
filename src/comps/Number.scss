@@ -1,0 +1,17 @@
+#app .number {
+
+  display: inline-block;
+  padding: .1rem;
+
+  .name {
+    text-align: center;
+  }
+
+  input {
+    background: #444;
+    border: none;
+    color: #ddd;
+    font-weight: bold;
+    width: 4rem;
+  }
+}

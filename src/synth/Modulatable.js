@@ -1,5 +1,6 @@
 
 export default class Modulatable {
+
     constructor(param_def, init=null) {
         this.params = {};
         for (const key of Object.keys(param_def)) {
@@ -69,6 +70,8 @@ export default class Modulatable {
     set_modulatable_param = (name, value) => {
         if (!this.params[name])
             return false;
+        if (typeof this.params[name].value === "number")
+            value = parseFloat(value);
         this.params[name].value = value;
         return true;
     };
