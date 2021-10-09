@@ -7,11 +7,42 @@ import Number from "./Number";
 const Sequence = (props) => {
 
     const { sequence_id } = props;
-    const { sequences, dispatcher } = useContext(state_context);
+    const { params, sequences, dispatcher } = useContext(state_context);
     const
         sequence = sequences[sequence_id],
         values = sequence.params.values.value,
-        length = values.length;
+        length = values.length,
+        bar_length = params.bar_length.value,
+        num_bars = Math.floor(length / bar_length) + 1;
+
+    const values_div = [];
+    let sub_values_div = [];
+    for (let i=0; i<values.length; ++i) {
+        sub_values_div.push((
+            <div
+                key={i}
+                className={"button" + (values[i] ? " on" : " off") + (sequence.index === i ? " tick" : "")}
+                onClick={e => {
+                    dispatcher({
+                        type: "SET_SEQUENCE_VALUE",
+                        id: sequence_id, index: i, value: 1 - values[i]
+                    })
+                }}
+            />
+        ));
+        if (sub_values_div.length >= bar_length || i+1 === values.length) {
+            values_div.push(
+                <div
+                    key={i}
+                    className={"sub-values" + (values_div.length % 2 ? " odd" : "")}
+                    style={{grid: `auto-flow / repeat(${bar_length}, ${1/bar_length}fr)`}}
+                >
+                    {sub_values_div}
+                </div>
+            );
+            sub_values_div = [];
+        }
+    }
 
     return (
         <div className={"sequence"}>
@@ -30,19 +61,8 @@ const Sequence = (props) => {
                     />
                 </div>
 
-                <div className={"values"} style={{grid: `auto-flow / repeat(${length}, ${1/length}fr)`}}>
-                    {values.map((value, index) => (
-                        <div
-                            key={index}
-                            className={"button" + (value ? " on" : " off") + (sequence.index === index ? " tick" : "")}
-                            onClick={e => {
-                                dispatcher({
-                                    type: "SET_SEQUENCE_VALUE",
-                                    id: sequence_id, index: index, value: 1 - values[index]
-                                })
-                            }}
-                        />
-                    ))}
+                <div className={"values"} style={{grid: `auto-flow / repeat(${num_bars}, ${1/num_bars}fr)`}}>
+                    {values_div}
                 </div>
 
                 <div style={{height: ".75rem"}}/>

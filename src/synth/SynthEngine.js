@@ -10,14 +10,17 @@ export default class SynthEngine extends Modulatable {
         super({
             "bpm": {
                 default: 120,
+                min_value: 1,
                 help: "Beats Per Minute"
             },
             "bar_length": {
                 default: 4,
+                min_value: 1,
                 help: "length of a bar / measure"
             },
             "note_div": {
                 default: 16,
+                min_value: 1,
                 help: "length of notes per bar as 1/X"
             }
         });

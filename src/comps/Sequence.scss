@@ -18,6 +18,11 @@
     font-weight: bold;
     height: 1rem;
 
+    .sub-values {
+      display: grid;
+      margin-right: .2rem;
+    }
+
     .button {
       height: 100%;
       background: #555;
@@ -32,6 +37,21 @@
 
         &.tick {
           background: #7aa;
+        }
+      }
+    }
+
+    .sub-values.odd {
+      .button{
+        background: #666;
+        &.tick {
+          background: #888;
+        }
+        &.on {
+          background: #699;
+          &.tick {
+            background: #8bb;
+          }
         }
       }
     }
