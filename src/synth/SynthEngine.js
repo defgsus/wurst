@@ -16,7 +16,7 @@ export default class SynthEngine extends Modulatable {
                 help: "length of a bar / measure"
             },
             "note_div": {
-                default: 8,
+                default: 16,
                 help: "length of notes per bar as 1/X"
             }
         });
@@ -25,13 +25,13 @@ export default class SynthEngine extends Modulatable {
 
         this.context = context || new AudioContext();
         this.voices = {
-            "0": new Voice(this, {frequency: 300}),
+            "0": new Voice(this, {frequency: 300, filter_frequency: 500, type: "sawtooth"}),
             "1": new Voice(this),
         };
         this.sequences = {
             "0": new Sequence(this, {values: [1, 0, 0, 0, 1, 0, 0, 0], target: "voice.0.gate"}),
             "1": new Sequence(this, {values: [1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0], target: "voice.1.gate"}),
-            "2": new Sequence(this, {values: [1, 0, 0, 1, 0, 0, 0], target: "voice.1.amp"}),
+            "2": new Sequence(this, {values: [1, 0, 0, 1, 0, 0, 0], target: "voice.0.filter_frequency", amp: 1000}),
         };
 
    }
@@ -135,6 +135,11 @@ export default class SynthEngine extends Modulatable {
 
     set_sequence_value = (id, index, value) => {
         this.sequences[id].set_value(index, value);
+    };
+
+    add_sequence = () => {
+        const count = Object.keys(this.sequences).length;
+        this.sequences[`${count}`] = new Sequence(this);
     };
 
     reset_all_modulation = () => {

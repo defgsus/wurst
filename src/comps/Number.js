@@ -5,22 +5,23 @@ const Number = (probs) => {
         param, on_change
     } = probs;
 
-    const
-        min_value = typeof param.min_value === "number" ? param.min_value : 0,
-        max_value = typeof param.min_value === "number" ? param.max_value : 100
-        ;
-
     return (
         <div className={"number"}>
             <input
                 type={"number"}
-                min={min_value}
-                max={max_value}
+                min={param.min_value}
+                max={param.max_value}
                 step={param.step || 1}
                 value={param.true_value}
                 onChange={e => {
-                    if (on_change && !isNaN(e.target.value))
-                        on_change(e.target.value);
+                    let value = parseFloat(e.target.value);
+                    if (on_change && !isNaN(value)) {
+                        if (typeof param.min_value === "number")
+                            value = Math.max(param.min_value, value);
+                        if (typeof param.max_value === "number")
+                            value = Math.min(param.max_value, value);
+                        on_change(value);
+                    }
                 }}
             />
             <div className={"name"}>{param.name}</div>

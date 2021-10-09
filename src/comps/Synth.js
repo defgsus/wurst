@@ -42,6 +42,7 @@ const Synth = (props) => {
 
     return (
         <div>
+
             {Object.keys(voices).map(key => (
                 <Voice
                     key={key}
@@ -55,6 +56,12 @@ const Synth = (props) => {
                     sequence_id={key}
                 />
             ))}
+
+            <button
+                className={"add-button"}
+                onClick={e => dispatcher({type: "ADD_SEQUENCE"})}>
+                seq +
+            </button>
 
             <pre>{JSON.stringify(state, null, 2)}</pre>
         </div>

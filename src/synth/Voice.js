@@ -9,6 +9,10 @@ export default class Voice extends Modulatable {
                 min_value: 0, max_value: 1,
                 help: "gate for amplitude envelope",
             },
+            "type": {
+                default: "sine",
+                choices: ["sine", "square", "sawtooth", "triangle"]
+            },
             "frequency": {
                 default: 500,
                 min_value: -22050, max_value: 22050,
@@ -29,6 +33,12 @@ export default class Voice extends Modulatable {
                 min_value: 0, max_value: 5000,
                 help: "decay of amplitude envelope (milliseconds)",
             },
+            "filter_frequency": {
+                default: 22000,
+                min_value: 1, max_value: 22050,
+                help: "frequency in Hertz",
+            },
+
         }, params);
         this.synth = synth;
         this.context = this.synth.context;
@@ -37,7 +47,12 @@ export default class Voice extends Modulatable {
         this.env = this.context.createGain();
         this.env.gain.setValueAtTime(0, 0);
         this.gain = this.context.createGain();
-        this.osc.connect(this.env).connect(this.gain).connect(this.context.destination);
+        this.filter = this.context.createBiquadFilter();
+        this.osc
+            .connect(this.env)
+            .connect(this.gain)
+            .connect(this.filter)
+            .connect(this.context.destination);
         this.osc.start()
     }
 
@@ -47,7 +62,10 @@ export default class Voice extends Modulatable {
             this.osc.frequency.setValueAtTime(this.param("frequency"), now);
         if (this.param("amp") !== this.gain.gain.value)
             this.gain.gain.setValueAtTime(this.param("amp"), now);
-
+        if (this.param("type") !== this.osc.type)
+            this.osc.type = this.param("type");
+        if (this.param("filter_frequency") !== this.filter.frequency.value)
+            this.filter.frequency.setValueAtTime(this.param("filter_frequency"), now);
         if (this.param("gate") >= .5) {
             this.env.gain.cancelScheduledValues(now);
             this.env.gain.linearRampToValueAtTime(1, now + this.param("attack") / 1000.);

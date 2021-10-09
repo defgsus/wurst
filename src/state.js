@@ -17,6 +17,10 @@ export function reducer(state, action) {
             _synth.apply_transport_signal(action.signal);
             return _synth.get_state();
 
+        case "ADD_SEQUENCE":
+            _synth.add_sequence();
+            return _synth.get_state();
+
         case "SET_MAIN_PARAM":
             _synth.set_main_param(action.name, action.value);
             return _synth.get_state();

@@ -59,9 +59,11 @@ export default class Modulatable {
                 name: key,
                 value: _modulated_value(param),
                 true_value: param.value,
+                mod_value: param.modulation_value,
                 min_value: param.min_value,
                 max_value: param.max_value,
                 help: param.help,
+                choices: param.choices,
             };
         }
         return values;
