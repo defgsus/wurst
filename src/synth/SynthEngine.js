@@ -29,13 +29,13 @@ export default class SynthEngine extends Modulatable {
 
         this.context = context || new AudioContext();
         this.voices = {
-            "0": new Voice(this, {frequency: 300, filter_frequency: 500, type: "sawtooth"}),
+            "0": new Voice(this, {note: 57, filter_frequency: 500, type: "sawtooth"}),
             "1": new Voice(this),
         };
         this.sequences = {
             "0": new Sequence(this, {values: [1, 0, 0, 0, 1, 0, 0, 0], target: "voice.0.gate"}),
-            "1": new Sequence(this, {values: [1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0], target: "voice.1.gate"}),
-            "2": new Sequence(this, {values: [1, 0, 0, 1, 0, 0, 0], target: "voice.0.filter_frequency", amp: 1000}),
+            "1": new Sequence(this, {values: [1, 0, 0, 1, 0, 0, 0], target: "voice.0.filter_gate", amp: 1000}),
+            "2": new Sequence(this, {values: [1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0], target: "voice.1.gate"}),
         };
 
    }

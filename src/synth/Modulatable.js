@@ -30,6 +30,8 @@ export default class Modulatable {
 
     param = (name) => {
         const p = this.params[name];
+        if (!p)
+            throw `Parameter '${name}' does not exist`;
         return _modulated_value(p);
     };
 
