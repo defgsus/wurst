@@ -45,6 +45,14 @@ export default class Sequence extends Modulatable {
         };
     };
 
+    serialize = () => {
+        return {
+            tick: this.tick,
+            index: this.index,
+            params: this.get_param_values(),
+        };
+    };
+
     apply_tick = () => {
         this.sub_tick += 1;
         if (this.sub_tick >= this.param("speed_div")) {

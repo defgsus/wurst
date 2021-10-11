@@ -29,16 +29,16 @@ export default class SynthEngine extends Modulatable {
 
         this.context = context || new AudioContext();
         this.voices = {
-            "0": new Voice(this, {note: 57, filter_frequency: 500, type: "sawtooth"}),
-            "1": new Voice(this),
+            //"1": new Voice(this, {note: 57, filter_frequency: 500, type: "sawtooth"}),
+            "0": new Voice(this),
         };
         this.sequences = {
             "0": new Sequence(this, {values: [1, 0, 0, 0, 1, 0, 0, 0], target: "voice.0.gate"}),
-            "1": new Sequence(this, {values: [1, 0, 0, 1, 0, 0, 0], target: "voice.0.filter_gate", amp: 1000}),
-            "2": new Sequence(this, {values: [1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0], target: "voice.1.gate"}),
+            //"1": new Sequence(this, {values: [1, 0, 0, 1, 0, 0, 0], target: "voice.0.filter_gate", amp: 1000}),
+            //"2": new Sequence(this, {values: [1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0], target: "voice.1.gate"}),
         };
 
-   }
+    }
 
     get_state = () => {
         const modulation_targets = [];
@@ -72,6 +72,47 @@ export default class SynthEngine extends Modulatable {
             voices: voices,
             sequences: sequences,
             modulation_targets,
+        }
+    };
+
+    stop = () => {
+        for (const key of Object.keys(this.voices)) {
+            this.voices[key].stop();
+        }
+    };
+
+    serialize = () => {
+        const data = {
+            tick: this.tick,
+            params: this.get_param_values(),
+            voices: {},
+            sequences: {},
+        };
+        for (const key of Object.keys(this.voices)) {
+            data.voices[key] = this.voices[key].serialize();
+        }
+        for (const key of Object.keys(this.sequences)) {
+            data.sequences[key] = this.sequences[key].serialize();
+        }
+        return data;
+    };
+
+    deserialize = (data) => {
+        this.stop();
+        this.voices = {};
+        this.sequences = {};
+        this.tick = data.tick;
+        this.set_modulatable_params(data.params);
+
+        for (const key of Object.keys(data.voices)) {
+            this.voices[key] = new Voice(this, data.voices[key].params);
+        }
+
+        for (const key of Object.keys(data.sequences)) {
+            this.sequences[key] = new Sequence(this, data.sequences[key].params);
+            // TODO: this is hacky, rather move to a (de-)serialization base
+            this.sequences[key].tick = data.sequences[key].tick;
+            this.sequences[key].index = data.sequences[key].index;
         }
     };
 

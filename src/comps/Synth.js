@@ -1,4 +1,4 @@
-import React, { Component, useContext, useEffect } from "react";
+import React, { Component, useContext, useEffect, useState } from "react";
 import state_context from "../context";
 import Sequence from "./Sequence";
 import Voice from "./Voice";
@@ -37,6 +37,7 @@ const Synth = (props) => {
         tick, playback_state, params,
         voices, sequences, dispatcher
     } = state;
+
     //console.log("STATE", state);
     update_tick(playback_state, params.bpm.value, params.bar_length.value, params.note_div.value, dispatcher);
 
@@ -70,7 +71,7 @@ const Synth = (props) => {
                 </button>
             </div>
 
-            <pre>{JSON.stringify(state, null, 2)}</pre>
+            {/*<pre>{JSON.stringify(state, null, 2)}</pre>*/}
         </div>
     );
 

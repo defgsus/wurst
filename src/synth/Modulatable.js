@@ -80,6 +80,12 @@ export default class Modulatable {
         return true;
     };
 
+    set_modulatable_params = (params) => {
+        for (const key of Object.keys(params)) {
+            this.set_modulatable_param(key, params[key]);
+        }
+    };
+
 }
 
 

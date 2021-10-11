@@ -1,8 +1,9 @@
 @import "comps/Group";
-@import "comps/VFader";
 @import "comps/Knob";
 @import "comps/Number";
 @import "comps/Sequence";
+@import "comps/Synth";
+@import "comps/VFader";
 @import "comps/Voice";
 
 body {
@@ -14,6 +15,13 @@ body {
 #app {
     .hidden {
         display: none;
+    }
+
+    input {
+        background: #202332;
+        color: #ddd;
+        border: 1px solid #2d4e6c;
+        padding: .2rem;
     }
 
     select {
@@ -48,10 +56,13 @@ body {
     .grid-x {
         display: flex;
         flex-direction: row;
+        flex-wrap: wrap;
 
         &.margin-right > * {
             margin-right: .1rem;
         }
+
+        .grow { flex-grow: 1000; }
     }
 
 }

@@ -4,6 +4,13 @@ import SynthEngine from "./synth/SynthEngine";
 
 let _synth = new SynthEngine();
 
+function _init_synth() {
+    const data = restore("wurst");
+    if (data)
+        _synth.deserialize(data);
+}
+_init_synth();
+
 
 export function reducer(state, action) {
     switch (action.type) {
@@ -25,6 +32,20 @@ export function reducer(state, action) {
             _synth.add_sequence();
             return _synth.get_state();
 
+        case "NEW":
+            _synth.stop();
+            _synth = new SynthEngine();
+            return _synth.get_state();
+
+        case "SAVE":
+            store(action.name, _synth.serialize());
+            return state;
+
+        case "LOAD": {
+            const data = restore(action.name);
+            _synth.deserialize(data);
+            return _synth.get_state();
+        }
         case "SET_MAIN_PARAM":
             _synth.set_main_param(action.name, action.value);
             return _synth.get_state();
@@ -56,3 +77,18 @@ export const StateProvider = ({children}) => {
         </state_context.Provider>
     );
 };
+
+
+function store(name, data) {
+    const data_str = JSON.stringify(data);
+    console.log("THE SONG:");
+    console.log(data_str);
+    sessionStorage.setItem(name, data_str);
+}
+
+function restore(name) {
+    const str = sessionStorage.getItem(name);
+    if (!str)
+        return;
+    return JSON.parse(str);
+}

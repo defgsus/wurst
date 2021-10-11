@@ -14,9 +14,9 @@ export default class Voice extends Modulatable {
                 choices: ["sine", "square", "sawtooth", "triangle"]
             },
             "note": {
-                default: 64,
-                min_value: 1, max_value: 256,
-                help: "musical note",
+                default: 50,
+                min_value: 1, max_value: 128,
+                help: "musical note @ A4 == 440Hz",
             },
             "frequency": {
                 default: 0,
@@ -103,6 +103,10 @@ export default class Voice extends Modulatable {
         this.osc.start()
     }
 
+    stop = () => {
+        this.osc.stop();
+    };
+
     base_freq = () => {
         const
             note = this.param("note"),
@@ -152,6 +156,12 @@ export default class Voice extends Modulatable {
     get_state = () => {
         return {
             params: this.get_params_state(),
+        };
+    };
+
+    serialize = () => {
+        return {
+            params: this.get_param_values(),
         };
     };
 

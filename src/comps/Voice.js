@@ -16,10 +16,10 @@ const Voice = (props) => {
             <div className={"header"}>voice.{voice_id}</div>
             <div className={"content"}>
                 <div className={"grid-x margin-right"}>
-                    <Knob
+                    {/*<Knob
                         param={voice.params.amp}
                         on_change={value => dispatcher({type: "SET_VOICE_PARAM", id: voice_id, name: "amp", value})}
-                    />
+                    />*/}
                     <Select
                         param={voice.params.type}
                         on_change={value => dispatcher({type: "SET_VOICE_PARAM", id: voice_id, name: "type", value})}

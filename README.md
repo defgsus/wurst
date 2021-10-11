@@ -9,6 +9,8 @@ dispatchers.
 
 So it behaves a bit random, like old analog machines when room temperature
 changes. Only, in this case the garbage collector might be to blame.
+Actually on my linux, with intellij running besides the song tempo
+changes drastically when typing the javascript ;)
 
 Nice weekend project but apart from the WebAudio API which is quite
 inspiring, it's yet another struggle with state management, render
