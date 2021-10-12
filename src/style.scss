@@ -9,10 +9,12 @@
 body {
     background: #222222;
     color: #ccc;
-    font-family: monospace;
 }
 
 #app {
+    font-family: monospace;
+    font-size: .7rem;
+
     .hidden {
         display: none;
     }

@@ -6,7 +6,8 @@ export default class Sequence extends Modulatable {
             "length": {
                 default: 8,
                 min_value: 1, max_value: 256,
-                help: "length of sequence"
+                help: "length of sequence",
+                no_target: true,
             },
             "speed_div": {
                 default: 1,
@@ -15,11 +16,13 @@ export default class Sequence extends Modulatable {
             },
             "target": {
                 default: "voice.0.gate",
-                help: "target of the sequence modulation"
+                help: "target of the sequence modulation",
+                no_target: true,
             },
             "values": {
                 default: [0, 0, 0, 0, 0, 0, 0, 0],
-                help: "sequence values"
+                help: "sequence values",
+                no_target: true,
             },
             "amp": {
                 default: 1,

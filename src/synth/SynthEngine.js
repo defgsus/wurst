@@ -52,13 +52,15 @@ export default class SynthEngine extends Modulatable {
             voices[key] = this.voices[key].get_state();
             voices[key].id = key;
             for (const name of Object.keys(this.voices[key].params))
-                modulation_targets.push(`voice.${key}.${name}`);
+                if (!this.voices[key].params[name].no_target)
+                    modulation_targets.push(`voice.${key}.${name}`);
         }
         for (const key of Object.keys(this.sequences)) {
             sequences[key] = this.sequences[key].get_state();
             sequences[key].id = key;
             for (const name of Object.keys(this.sequences[key].params))
-                modulation_targets.push(`sequence.${key}.${name}`)
+                if (!this.sequences[key].params[name].no_target)
+                    modulation_targets.push(`sequence.${key}.${name}`)
         }
 
         return {
