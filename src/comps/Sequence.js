@@ -51,6 +51,7 @@ const Sequence = (props) => {
                 <div className={"grid-x"}>
                     <TargetSelect
                         target={sequence.params.target.value}
+                        sequence_id={sequence_id}
                         on_change={value => {
                             dispatcher({type: "SET_SEQUENCE_PARAM", id: sequence_id, name: "target", value});
                         }}

@@ -1,7 +1,7 @@
 
 export const DEMO01 = {
-    "tick": 669,
-    "params": {"bpm": 120, "bar_length": 4, "note_div": 16},
+    "tick": 0,
+    "params": {"bpm": 160, "bar_length": 4, "note_div": 16},
     "voices": {
         "0": {
             "params": {

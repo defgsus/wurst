@@ -1,11 +1,13 @@
 import { useReducer } from "react";
 import state_context from "./context";
 import SynthEngine from "./synth/SynthEngine";
+import { DEMO01 } from "./songs";
 
 let _synth = new SynthEngine();
 
 function _init_synth() {
-    const data = restore("wurst");
+    //const data = restore("wurst");
+    const data = DEMO01;
     if (data)
         _synth.deserialize(data);
 }

@@ -28,7 +28,7 @@ const Transport = (props) => {
                     </div>
                     <div>|</div>
                     <div>
-                        <button onClick={e => dispatcher({type: "NEW"})}>NEW</button>
+                        <button onClick={e => dispatcher({type: "NEW"})}>CLEAR</button>
                     </div>
                     <div>|</div>
                     <div>

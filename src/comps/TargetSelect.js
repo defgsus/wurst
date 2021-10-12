@@ -5,7 +5,7 @@ import Clock from "./Clock";
 
 const TargetSelect = (props) => {
     const { modulation_targets } = useContext(state_context);
-    const { on_change, target } = props;
+    const { on_change, target, sequence_id } = props;
 
     return (
         <div className={"select"} title={"select the modulation target"}>
@@ -16,9 +16,12 @@ const TargetSelect = (props) => {
                         on_change(e.target.value);
                 }}
             >
-                {modulation_targets.map(t => (
-                    <option value={t} key={t}>{t}</option>
-                ))}
+                {modulation_targets
+                    .filter(t => !sequence_id || !t.startsWith("sequence.") || t.split(".")[1] !== sequence_id)
+                    .map(t => (
+                        <option value={t} key={t}>{t}</option>
+                    ))
+                }
             </select>
             <div style={{textAlign: "center"}}>target</div>
         </div>
