@@ -1,4 +1,10 @@
 #app .synth {
   display: flex;
   flex-wrap: wrap;
+
+  .voice-pane {
+    display: flex;
+    flex-direction: column;
+    margin-top: 1rem;
+  }
 }

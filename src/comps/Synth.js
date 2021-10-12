@@ -41,35 +41,53 @@ const Synth = (props) => {
     //console.log("STATE", state);
     update_tick(playback_state, params.bpm.value, params.bar_length.value, params.note_div.value, dispatcher);
 
+    const voice_panes = {};
+    for (const key of Object.keys(voices))
+        voice_panes[key] = [];
+    voice_panes["extra"] = [];
+
+    for (const key of Object.keys(sequences)) {
+        const target = sequences[key].params.target.value.split(".");
+        if (target[0] === "voice")
+            voice_panes[target[1]].push(key);
+        else
+            voice_panes["extra"].push(key)
+    }
+
     return (
         <div className={"synth"}>
 
-            {Object.keys(voices).map(key => (
-                <Voice
-                    key={key}
-                    voice_id={key}
-                />
+            {Object.keys(voice_panes).map(voice_id => (
+                <div className={"voice-pane"} key={voice_id}>
+                    {voice_id !== "extra"
+                        ? <Voice voice_id={voice_id}/>
+                        : null
+                    }
+                    {voice_panes[voice_id].map(seq_key => (
+                        <Sequence
+                            key={seq_key}
+                            sequence_id={seq_key}
+                        />
+                    ))}
+                    {voice_id === "extra"
+                        ? (
+                            <div>
+                                <button
+                                    className={"add-button"}
+                                    onClick={e => dispatcher({type: "ADD_SEQUENCE"})}>
+                                    seq +
+                                </button>
+                                <button
+                                    className={"add-button"}
+                                    onClick={e => dispatcher({type: "ADD_VOICE"})}>
+                                    voice +
+                                </button>
+                            </div>
+                        )
+                        : null
+                    }
+                </div>
             ))}
-
-            {Object.keys(sequences).map(key => (
-                <Sequence
-                    key={key}
-                    sequence_id={key}
-                />
-            ))}
-
-            <div>
-                <button
-                    className={"add-button"}
-                    onClick={e => dispatcher({type: "ADD_SEQUENCE"})}>
-                    seq +
-                </button>
-                <button
-                    className={"add-button"}
-                    onClick={e => dispatcher({type: "ADD_VOICE"})}>
-                    voice +
-                </button>
-            </div>
 
             {/*<pre>{JSON.stringify(state, null, 2)}</pre>*/}
         </div>
